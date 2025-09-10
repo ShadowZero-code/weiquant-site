@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeiQuant Portfolio Pro | Advanced Portfolio Management</title>
+    
+    <!-- Material Design & Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Chart.js & Financial Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- WeiQuant Brand Styling -->
+    <link rel="stylesheet" href="css/weiquant-brand.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .material-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .metric-card {
+            background: linear-gradient(135deg, var(--gradient-from) 0%, var(--gradient-to) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .react-component {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f9fafb;
+            cursor: pointer;
+        }
+        .positive { color: #10b981; }
+        .negative { color: #ef4444; }
+        .neutral { color: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Disclaimer Banner -->
+    <div id="disclaimerBanner" class="bg-amber-50 border-b-2 border-amber-400 px-4 py-2">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2 text-sm text-amber-800">
+                <i class="fas fa-exclamation-triangle text-amber-600"></i>
+                <span><strong>Disclaimer:</strong> For educational purposes only. Models are experimental and not fully mature. Not investment advice.</span>
+            </div>
+            <button onclick="document.getElementById('disclaimerBanner').style.display='none'" class="text-amber-600 hover:text-amber-800">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app" class="min-h-screen">
+        <!-- Navigation Header -->
+        <nav class="bg-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-4">
+                        <a href="index.html" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition">
+                            <i class="fas fa-arrow-left"></i>
+                            <span class="hidden sm:inline">Back to Platform</span>
+                        </a>
+                        <div class="border-l border-gray-300 h-6 mx-2"></div>
+                        <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+                        <h1 class="text-xl font-semibold text-gray-900">WeiQuant Portfolio Pro</h1>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <button onclick="portfolioApp.refreshPrices()" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Refresh Prices</span>
+                        </button>
+                        <button onclick="portfolioApp.exportData()" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                            <i class="fas fa-download"></i>
+                            <span>Export</span>
+                        </button>
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                            <i class="fas fa-clock"></i>
+                            <span id="lastUpdateTime">Never updated</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="container mx-auto px-4 py-8">
+            <!-- Portfolio Metrics Dashboard -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                <!-- Total Value Card -->
+                <div class="metric-card" style="--gradient-from: #3b82f6; --gradient-to: #2563eb;">
+                    <div class="relative z-10">
+                        <div class="text-sm opacity-90 mb-1">Total Portfolio Value</div>
+                        <div class="text-2xl font-bold" id="totalValue">$0.00</div>
+                        <div class="text-xs opacity-75 mt-1">
+                            <span id="totalValueChange">+$0.00 (0.00%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total P&L Card -->
+                <div class="metric-card" style="--gradient-from: #10b981; --gradient-to: #059669;">
+                    <div class="relative z-10">
+                        <div class="text-sm opacity-90 mb-1">Total P&L</div>
+                        <div class="text-2xl font-bold" id="totalPnL">$0.00</div>
+                        <div class="text-xs opacity-75 mt-1">
+                            <span id="totalPnLPercent">0.00%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Change Card -->
+                <div class="metric-card" style="--gradient-from: #8b5cf6; --gradient-to: #7c3aed;">
+                    <div class="relative z-10">
+                        <div class="text-sm opacity-90 mb-1">Today's Change</div>
+                        <div class="text-2xl font-bold" id="todayChange">$0.00</div>
+                        <div class="text-xs opacity-75 mt-1">
+                            <span id="todayChangePercent">0.00%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sharpe Ratio Card -->
+                <div class="metric-card" style="--gradient-from: #f59e0b; --gradient-to: #d97706;">
+                    <div class="relative z-10">
+                        <div class="text-sm opacity-90 mb-1">Sharpe Ratio</div>
+                        <div class="text-2xl font-bold" id="sharpeRatio">0.00</div>
+                        <div class="text-xs opacity-75 mt-1">Risk-Adjusted Return</div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Beta Card -->
+                <div class="metric-card" style="--gradient-from: #ef4444; --gradient-to: #dc2626;">
+                    <div class="relative z-10">
+                        <div class="text-sm opacity-90 mb-1">Portfolio Beta</div>
+                        <div class="text-2xl font-bold" id="portfolioBeta">0.00</div>
+                        <div class="text-xs opacity-75 mt-1">Market Sensitivity</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Asset Input Form Component -->
+            <div class="material-card p-6 mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-plus-circle text-green-600 mr-2"></i>
+                    Add New Position
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Symbol/Ticker *</label>
+                        <input type="text" id="symbolInput" placeholder="AAPL, MSFT, GOOGL" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
+                        <input type="number" id="quantityInput" placeholder="100" step="0.001" min="0.001"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Buy Date *</label>
+                        <input type="date" id="buyDateInput" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Buy Price (Auto-fetch)</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="buyPriceInput" placeholder="Auto" step="0.01" min="0.01"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                            <button onclick="portfolioApp.fetchHistoricalPrice()" 
+                                    class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-4">
+                    <button onclick="portfolioApp.addPosition()" 
+                            class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center">
+                        <i class="fas fa-plus mr-2"></i>Add Position
+                    </button>
+                    <button onclick="portfolioApp.clearForm()" 
+                            class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition flex items-center">
+                        <i class="fas fa-redo mr-2"></i>Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Holdings Table Component -->
+            <div class="material-card p-6 mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-briefcase text-blue-600 mr-2"></i>
+                        Portfolio Holdings
+                    </h2>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="searchInput" placeholder="Search holdings..." 
+                               onkeyup="portfolioApp.filterHoldings(this.value)"
+                               class="px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-hover">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symbol</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Buy Price</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Current Price</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Market Value</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">P&L</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">P&L %</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Today</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">CAGR</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Weight</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="holdingsTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Dynamic content will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Portfolio Performance Chart -->
+                <div class="material-card p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Portfolio Performance</h3>
+                    <div style="height: 400px;">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Asset Allocation Chart -->
+                <div class="material-card p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Asset Allocation</h3>
+                    <div style="height: 400px;">
+                        <canvas id="allocationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Metrics Section -->
+            <div class="material-card p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Risk Analytics</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-4 border border-gray-200 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600" id="annualVolatility">0.00%</div>
+                        <div class="text-sm text-gray-600">Annual Volatility</div>
+                    </div>
+                    <div class="text-center p-4 border border-gray-200 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600" id="maxDrawdown">0.00%</div>
+                        <div class="text-sm text-gray-600">Max Drawdown</div>
+                    </div>
+                    <div class="text-center p-4 border border-gray-200 rounded-lg">
+                        <div class="text-2xl font-bold text-purple-600" id="valueAtRisk">$0.00</div>
+                        <div class="text-sm text-gray-600">VaR (95%)</div>
+                    </div>
+                    <div class="text-center p-4 border border-gray-200 rounded-lg">
+                        <div class="text-2xl font-bold text-orange-600" id="expectedReturn">0.00%</div>
+                        <div class="text-sm text-gray-600">Expected Return</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sector Breakdown -->
+            <div class="material-card p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Sector Breakdown</h3>
+                <div style="height: 300px;">
+                    <canvas id="sectorChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 flex flex-col items-center">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-gray-700">Loading market data...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Implementation -->
+    <script src="js/portfolio-pro.js"></script>
+</body>
+</html>

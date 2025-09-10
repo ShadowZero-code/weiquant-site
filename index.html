@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeiQuant - Professional Quantitative Investment Research Platform</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/weiquant-brand.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-gradient-to-r from-blue-900 to-indigo-800 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-chart-line text-2xl text-cyan-400"></i>
+                    <h1 class="text-xl font-bold weiquant-logo" style="color: white; -webkit-text-fill-color: white;">WeiQuant</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#research" class="hover:text-blue-200 transition" data-i18n="nav.research">Research</a>
+                    <a href="#analysis" class="hover:text-blue-200 transition" data-i18n="nav.analysis">Analysis</a>
+                    <a href="portfolio-pro.html" class="hover:text-blue-200 transition flex items-center">
+                        <i class="fas fa-briefcase mr-1"></i>
+                        <span data-i18n="nav.portfolio">Portfolio</span>
+                        <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                    </a>
+                    <a href="#quant" class="hover:text-blue-200 transition" data-i18n="nav.quantModels">Models</a>
+                    <a href="#market" class="hover:text-blue-200 transition" data-i18n="nav.marketData">Market</a>
+                    <a href="#backtest" class="hover:text-blue-200 transition" data-i18n="nav.backtest">Backtest</a>
+                    <a href="#history" class="hover:text-blue-200 transition" data-i18n="nav.history">History</a>
+                    <a href="#settings" class="hover:text-blue-200 transition">
+                        <i class="fas fa-cog"></i> <span data-i18n="nav.settings">Settings</span>
+                    </a>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden bg-blue-800 text-white md:hidden">
+        <div class="container mx-auto px-4 py-4 space-y-2">
+            <a href="#analysis" class="block py-2 hover:text-blue-200">Analysis</a>
+            <a href="portfolio-pro.html" class="block py-2 hover:text-blue-200">
+                <i class="fas fa-briefcase mr-1"></i>Portfolio <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+            </a>
+            <a href="#quant" class="block py-2 hover:text-blue-200">WeiQuant Models</a>
+            <a href="#market" class="block py-2 hover:text-blue-200">Market Data</a>
+            <a href="#backtest" class="block py-2 hover:text-blue-200">Backtest</a>
+            <a href="#history" class="block py-2 hover:text-blue-200">History</a>
+            <a href="#settings" class="block py-2 hover:text-blue-200">
+                <i class="fas fa-cog mr-1"></i>Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Professional Research Dashboard Header -->
+    <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white py-3 border-b border-slate-700">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="text-xs text-slate-400">
+                        <i class="fas fa-server mr-1"></i> Model Status: <span class="text-green-400">Active</span>
+                    </div>
+                    <div class="text-xs text-slate-400">
+                        <i class="fas fa-database mr-1"></i> Data Feed: <span class="text-green-400">Connected</span>
+                    </div>
+                    <div class="text-xs text-slate-400">
+                        <i class="fas fa-clock mr-1"></i> Last Update: <span id="lastUpdate">2024-01-XX 00:00:00</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 text-xs">
+                    <span class="text-slate-400">Sharpe: <span class="text-green-400">1.45</span></span>
+                    <span class="text-slate-400">AUM: <span class="text-white">$125.3M</span></span>
+                    <span class="text-slate-400">Daily P&L: <span class="text-green-400">+$1.2M</span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-b from-slate-50 to-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    WeiQuant Professional Investment Analysis Platform
+                </h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    Research-driven investment strategies powered by transparent quantitative models
+                </p>
+                <div class="grid md:grid-cols-3 gap-4 mb-8 text-sm">
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <i class="fas fa-brain text-purple-600 text-2xl mb-2"></i>
+                        <h3 class="font-semibold">Factor Analysis</h3>
+                        <p class="text-gray-600">Multi-factor models with regime adaptation</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <i class="fas fa-chart-area text-blue-600 text-2xl mb-2"></i>
+                        <h3 class="font-semibold">Risk Decomposition</h3>
+                        <p class="text-gray-600">Systematic vs idiosyncratic risk analysis</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <i class="fas fa-dice text-green-600 text-2xl mb-2"></i>
+                        <h3 class="font-semibold">Monte Carlo</h3>
+                        <p class="text-gray-600">Jump diffusion simulation engine</p>
+                    </div>
+                </div>
+                <div class="flex justify-center space-x-4">
+                    <button onclick="scrollToSection('quant')" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-calculator mr-2"></i>Run WeiQuant Analysis
+                    </button>
+                    <button onclick="scrollToSection('analysis')" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
+                        <i class="fas fa-newspaper mr-2"></i>News Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Brand Section -->
+    <section class="bg-gradient-to-r from-indigo-50 to-purple-50 py-8 mb-8">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center space-x-8">
+                <div class="text-center">
+                    <div class="inline-flex items-center space-x-3 bg-white px-6 py-3 rounded-full shadow-md">
+                        <i class="fas fa-user-circle text-3xl text-indigo-600"></i>
+                        <div class="text-left">
+                            <h3 class="font-bold text-gray-800">Wei's Quantitative Research</h3>
+                            <p class="text-sm text-gray-600">Professional Trading Systems & Market Analysis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-6 text-sm">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-gray-700">2+ Years Experience</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-gray-700">Advanced Algorithms</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-gray-700">Risk-Managed Strategies</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Analysis Section -->
+    <section id="analysis" class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-newspaper text-blue-600 mr-2"></i>News Sentiment Analysis Engine
+                </h3>
+                
+                <!-- News Input Area -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Enter Financial News or Market Updates
+                    </label>
+                    <textarea id="newsInput" 
+                        class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        rows="4"
+                        placeholder="Example: Federal Reserve announces 25 basis point rate hike, tech stocks decline broadly..."></textarea>
+                    
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-sm text-gray-600">Quick Examples:</span>
+                        <button onclick="insertSampleNews('tech')" class="text-sm bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">
+                            Tech News
+                        </button>
+                        <button onclick="insertSampleNews('policy')" class="text-sm bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">
+                            Policy Changes
+                        </button>
+                        <button onclick="insertSampleNews('market')" class="text-sm bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">
+                            Market Volatility
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analysis Button -->
+                <button id="analyzeBtn" onclick="performAnalysis()" 
+                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition font-semibold">
+                    <i class="fas fa-brain mr-2"></i>Run AI Analysis
+                </button>
+
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" class="hidden mt-6 text-center">
+                    <div class="inline-flex items-center">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span class="ml-3 text-gray-600">AI analyzing...</span>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div id="analysisResults" class="hidden mt-8">
+                    <!-- Sentiment Analysis -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">
+                            <i class="fas fa-chart-pie text-blue-600 mr-2"></i>Market Sentiment Analysis
+                        </h4>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center p-4 bg-green-50 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600" id="bullishScore">0%</div>
+                                <div class="text-sm text-gray-600">Bullish</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-gray-600" id="neutralScore">0%</div>
+                                <div class="text-sm text-gray-600">Neutral</div>
+                            </div>
+                            <div class="text-center p-4 bg-red-50 rounded-lg">
+                                <div class="text-2xl font-bold text-red-600" id="bearishScore">0%</div>
+                                <div class="text-sm text-gray-600">Bearish</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investment Recommendations -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Investment Recommendations
+                        </h4>
+                        <div id="recommendations" class="space-y-3">
+                            <!-- Recommendations will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Asset Allocation -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">
+                                <i class="fas fa-coins text-yellow-500 mr-2"></i>Recommended Asset Allocation
+                            </h4>
+                            <div class="chart-wrapper">
+                                <canvas id="allocationChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">
+                                <i class="fas fa-shield-alt text-green-600 mr-2"></i>Risk Assessment
+                            </h4>
+                            <div class="chart-wrapper">
+                                <canvas id="riskChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Framework Section -->
+    <section id="research" class="py-12 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-flask text-indigo-600 mr-2"></i>Research Framework & Model Pipeline
+                </h3>
+
+                <!-- Research Tabs -->
+                <div class="border-b border-gray-200 mb-6">
+                    <nav class="-mb-px flex space-x-8">
+                        <button onclick="showResearchTab('problem', this)" class="research-tab active py-2 px-1 border-b-2 border-indigo-500 font-medium text-sm text-indigo-600">
+                            1. Problem Definition
+                        </button>
+                        <button onclick="showResearchTab('data', this)" class="research-tab py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700">
+                            2. Data Pipeline
+                        </button>
+                        <button onclick="showResearchTab('hypothesis', this)" class="research-tab py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700">
+                            3. Hypothesis
+                        </button>
+                        <button onclick="showResearchTab('model', this)" class="research-tab py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700">
+                            4. Model Design
+                        </button>
+                        <button onclick="showResearchTab('evaluation', this)" class="research-tab py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700">
+                            5. Evaluation
+                        </button>
+                        <button onclick="showResearchTab('innovation', this)" class="research-tab py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700">
+                            6. Innovation
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="researchContent">
+                    <!-- Problem Definition Tab -->
+                    <div id="problem-tab" class="research-content">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">
+                                    <i class="fas fa-bullseye text-indigo-500 mr-2"></i>Research Objectives
+                                </h4>
+                                <div class="bg-indigo-50 rounded-lg p-4">
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-indigo-600 mr-2 mt-1"></i>
+                                            <span><strong>Primary:</strong> Multi-objective portfolio optimization with regime-aware risk management</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-indigo-600 mr-2 mt-1"></i>
+                                            <span><strong>Metrics:</strong> Sharpe Ratio > 1.5, Max Drawdown < 15%, CVaR 95% < 2%</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-indigo-600 mr-2 mt-1"></i>
+                                            <span><strong>Horizon:</strong> 1-day to 1-year forward looking predictions</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">
+                                    <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>Constraints & Limitations
+                                </h4>
+                                <div class="bg-yellow-50 rounded-lg p-4">
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-arrow-right text-yellow-600 mr-2 mt-1"></i>
+                                            <span><strong>Latency:</strong> < 100ms for real-time signal generation</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-arrow-right text-yellow-600 mr-2 mt-1"></i>
+                                            <span><strong>Capital:</strong> Min $100K, Max $10M per position</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-arrow-right text-yellow-600 mr-2 mt-1"></i>
+                                            <span><strong>Regulatory:</strong> MiFID II, Basel III compliance required</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Research Questions -->
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-gray-800 mb-3">
+                                <i class="fas fa-question-circle text-purple-500 mr-2"></i>Key Research Questions
+                            </h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="border-l-4 border-purple-500 pl-4 py-2">
+                                    <p class="text-sm font-medium">Can regime-switching models improve risk-adjusted returns by 20%?</p>
+                                </div>
+                                <div class="border-l-4 border-purple-500 pl-4 py-2">
+                                    <p class="text-sm font-medium">Does sentiment divergence from fundamentals predict mean reversion?</p>
+                                </div>
+                                <div class="border-l-4 border-purple-500 pl-4 py-2">
+                                    <p class="text-sm font-medium">How do factor exposures vary across market regimes?</p>
+                                </div>
+                                <div class="border-l-4 border-purple-500 pl-4 py-2">
+                                    <p class="text-sm font-medium">Can graph neural networks capture cross-asset contagion?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Pipeline Tab (Hidden by default) -->
+                    <div id="data-tab" class="research-content hidden">
+                        <div class="space-y-6">
+                            <!-- Data Sources -->
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">
+                                    <i class="fas fa-database text-blue-500 mr-2"></i>Data Sources & Quality
+                                </h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="px-4 py-2 text-left">Data Type</th>
+                                                <th class="px-4 py-2 text-left">Source</th>
+                                                <th class="px-4 py-2 text-left">Frequency</th>
+                                                <th class="px-4 py-2 text-left">Quality Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b">
+                                                <td class="px-4 py-2 font-medium">Market Data</td>
+                                                <td class="px-4 py-2">Bloomberg, Refinitiv</td>
+                                                <td class="px-4 py-2">1-min bars</td>
+                                                <td class="px-4 py-2"><span class="text-green-600">99.5%</span></td>
+                                            </tr>
+                                            <tr class="border-b">
+                                                <td class="px-4 py-2 font-medium">Fundamentals</td>
+                                                <td class="px-4 py-2">SEC Filings, FactSet</td>
+                                                <td class="px-4 py-2">Quarterly</td>
+                                                <td class="px-4 py-2"><span class="text-green-600">98.0%</span></td>
+                                            </tr>
+                                            <tr class="border-b">
+                                                <td class="px-4 py-2 font-medium">Alternative</td>
+                                                <td class="px-4 py-2">Satellite, Web Traffic</td>
+                                                <td class="px-4 py-2">Daily</td>
+                                                <td class="px-4 py-2"><span class="text-yellow-600">85.0%</span></td>
+                                            </tr>
+                                            <tr class="border-b">
+                                                <td class="px-4 py-2 font-medium">Sentiment</td>
+                                                <td class="px-4 py-2">News, Social Media</td>
+                                                <td class="px-4 py-2">Real-time</td>
+                                                <td class="px-4 py-2"><span class="text-yellow-600">82.0%</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Feature Engineering -->
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">
+                                    <i class="fas fa-cogs text-green-500 mr-2"></i>Feature Engineering Pipeline
+                                </h4>
+                                <div class="grid md:grid-cols-3 gap-4">
+                                    <div class="bg-green-50 rounded-lg p-4">
+                                        <h5 class="font-medium text-green-800 mb-2">Technical Features</h5>
+                                        <ul class="text-xs space-y-1 text-gray-600">
+                                            <li>• Returns (1d, 5d, 20d, 60d)</li>
+                                            <li>• Volatility (GARCH, realized)</li>
+                                            <li>• Momentum indicators</li>
+                                            <li>• Microstructure metrics</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-blue-50 rounded-lg p-4">
+                                        <h5 class="font-medium text-blue-800 mb-2">Fundamental Features</h5>
+                                        <ul class="text-xs space-y-1 text-gray-600">
+                                            <li>• Value scores (P/E, P/B)</li>
+                                            <li>• Quality metrics (ROE, margins)</li>
+                                            <li>• Growth indicators</li>
+                                            <li>• Financial health scores</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-purple-50 rounded-lg p-4">
+                                        <h5 class="font-medium text-purple-800 mb-2">Alternative Features</h5>
+                                        <ul class="text-xs space-y-1 text-gray-600">
+                                            <li>• Sentiment scores</li>
+                                            <li>• Web traffic patterns</li>
+                                            <li>• Satellite imagery metrics</li>
+                                            <li>• Social media buzz</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hypothesis Tab Content -->
+            <div id="hypothesis-tab" class="research-content hidden">
+                <!-- Content will be dynamically loaded by loadHypothesisTab() -->
+            </div>
+            
+            <!-- Model Design Tab Content -->
+            <div id="model-tab" class="research-content hidden">
+                <!-- Content will be dynamically loaded by loadModelDesignTab() -->
+            </div>
+            
+            <!-- Evaluation Tab Content -->
+            <div id="evaluation-tab" class="research-content hidden">
+                <!-- Content will be dynamically loaded by loadEvaluationTab() -->
+            </div>
+            
+            <!-- Innovation Tab Content -->
+            <div id="innovation-tab" class="research-content hidden">
+                <!-- Content will be dynamically loaded by loadInnovationTab() -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Quantitative Analysis Section -->
+    <section id="quant" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-calculator text-purple-600 mr-2"></i>WeiQuant Analysis Engine
+                </h3>
+                
+                <!-- Research Framework -->
+                <div class="mb-8 p-4 bg-purple-50 rounded-lg">
+                    <h4 class="font-semibold text-gray-800 mb-2">
+                        <i class="fas fa-microscope text-purple-600 mr-2"></i>Research Framework
+                    </h4>
+                    <p class="text-sm text-gray-600 mb-3">
+                        Our models are based on empirical finance research with novel adaptations for real-time markets.
+                        Unlike black-box approaches, we provide full transparency in our methodology.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <strong>Hypothesis:</strong> Asset returns exhibit regime-dependent behavior
+                        </div>
+                        <div>
+                            <strong>Method:</strong> Adaptive multi-factor models with Bayesian inference
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model Selection -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Model Configuration</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Analysis Type</label>
+                                <select id="analysisType" class="w-full p-2 border rounded-lg">
+                                    <option value="factor">Factor Analysis</option>
+                                    <option value="risk">Risk Decomposition</option>
+                                    <option value="optimization">Portfolio Optimization</option>
+                                    <option value="montecarlo">Monte Carlo Simulation</option>
+                                    <option value="regime">Regime Detection</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Time Horizon (days)</label>
+                                <input type="number" id="timeHorizon" value="252" min="30" max="1260" 
+                                    class="w-full p-2 border rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Confidence Level</label>
+                                <select id="confidenceLevel" class="w-full p-2 border rounded-lg">
+                                    <option value="0.90">90%</option>
+                                    <option value="0.95" selected>95%</option>
+                                    <option value="0.99">99%</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Simulations</label>
+                                <input type="number" id="numSimulations" value="10000" min="1000" max="100000" 
+                                    class="w-full p-2 border rounded-lg">
+                            </div>
+                        </div>
+                        <button onclick="runQuantAnalysis()" 
+                            class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
+                            <i class="fas fa-play mr-2"></i>Run Analysis
+                        </button>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">Factor Exposures</h4>
+                        <div class="chart-wrapper" style="height: 250px;">
+                            <canvas id="factorChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Display -->
+                <div id="quantResults" class="hidden">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-4">Analysis Results</h4>
+                    
+                    <!-- Risk Metrics -->
+                    <div class="grid md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg">
+                            <div class="text-sm text-gray-600">Expected Return</div>
+                            <div class="text-xl font-bold text-gray-800" id="expectedReturn">-</div>
+                            <div class="text-xs text-gray-500">Annualized</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-lg">
+                            <div class="text-sm text-gray-600">Value at Risk (95%)</div>
+                            <div class="text-xl font-bold text-gray-800" id="varValue">-</div>
+                            <div class="text-xs text-gray-500">Daily</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg">
+                            <div class="text-sm text-gray-600">Sharpe Ratio</div>
+                            <div class="text-xl font-bold text-gray-800" id="sharpeRatio">-</div>
+                            <div class="text-xs text-gray-500">Risk-adjusted</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 p-4 rounded-lg">
+                            <div class="text-sm text-gray-600">Max Drawdown</div>
+                            <div class="text-xl font-bold text-gray-800" id="maxDrawdown">-</div>
+                            <div class="text-xs text-gray-500">Historical</div>
+                        </div>
+                    </div>
+
+                    <!-- Monte Carlo Paths -->
+                    <div class="mb-6">
+                        <h5 class="font-semibold text-gray-700 mb-3">Monte Carlo Simulation Paths</h5>
+                        <div class="chart-wrapper">
+                            <canvas id="monteCarloChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Regime Analysis -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-semibold text-gray-700 mb-3">Market Regime Analysis</h5>
+                            <div id="regimeIndicators" class="space-y-2">
+                                <!-- Regime indicators will be displayed here -->
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold text-gray-700 mb-3">Risk Decomposition</h5>
+                            <div class="chart-wrapper" style="height: 200px;">
+                                <canvas id="riskDecompositionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Management Gateway Section -->
+    <section id="portfolio" class="py-12 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-3xl font-bold mb-2 flex items-center">
+                                <i class="fas fa-chart-line mr-3"></i>
+                                Professional Portfolio Management
+                            </h2>
+                            <p class="text-blue-100 text-lg">
+                                Advanced portfolio tracking with real-time analytics and risk management
+                            </p>
+                        </div>
+                        <div class="hidden md:block">
+                            <i class="fas fa-briefcase text-6xl text-blue-200 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-8">
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <!-- Feature 1 -->
+                        <div class="text-center">
+                            <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-calculator text-blue-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-semibold text-gray-800 mb-2">Advanced Calculations</h3>
+                            <p class="text-gray-600 text-sm">
+                                P&L tracking, CAGR, Sharpe Ratio, Portfolio Beta, VaR analysis
+                            </p>
+                        </div>
+                        
+                        <!-- Feature 2 -->
+                        <div class="text-center">
+                            <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-sync-alt text-green-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-semibold text-gray-800 mb-2">Real-Time Updates</h3>
+                            <p class="text-gray-600 text-sm">
+                                Live price tracking, automatic refresh, market hours detection
+                            </p>
+                        </div>
+                        
+                        <!-- Feature 3 -->
+                        <div class="text-center">
+                            <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-chart-pie text-purple-600 text-2xl"></i>
+                            </div>
+                            <h3 class="font-semibold text-gray-800 mb-2">Visual Analytics</h3>
+                            <p class="text-gray-600 text-sm">
+                                Performance charts, asset allocation, sector breakdown visualization
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-star text-yellow-500 mr-2"></i>
+                            Key Features
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Complete position management (Add/Edit/Remove)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Duplicate position detection with averaging</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Historical price fetching for buy dates</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Export portfolio data (JSON/CSV)</span>
+                                </li>
+                            </ul>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Risk metrics dashboard (Volatility, Drawdown, VaR)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Portfolio performance tracking</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Sector diversification analysis</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Material Design professional interface</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="portfolio-pro.html" 
+                           class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-rocket mr-2"></i>
+                            Launch Portfolio Manager
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="PORTFOLIO_PRO_GUIDE.md" target="_blank"
+                           class="inline-flex items-center justify-center px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all">
+                            <i class="fas fa-book mr-2"></i>
+                            View Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Data Section -->
+    <section id="market" class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-globe text-blue-600 mr-2"></i>Real-time Market Data
+                </h3>
+                
+                <!-- Market Indices -->
+                <div class="grid md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg" data-index="sh-index">
+                        <div class="text-sm text-gray-600">Shanghai Index</div>
+                        <div class="text-xl font-bold text-gray-800 index-value">3,245.67</div>
+                        <div class="text-sm text-green-600 index-change">+1.2%</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg" data-index="sz-index">
+                        <div class="text-sm text-gray-600">Shenzhen Index</div>
+                        <div class="text-xl font-bold text-gray-800 index-value">10,456.89</div>
+                        <div class="text-sm text-green-600 index-change">+0.8%</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-purple-100 p-4 rounded-lg" data-index="nasdaq-index">
+                        <div class="text-sm text-gray-600">NASDAQ</div>
+                        <div class="text-xl font-bold text-gray-800 index-value">15,234.56</div>
+                        <div class="text-sm text-red-600 index-change">-0.5%</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 p-4 rounded-lg" data-index="sp500-index">
+                        <div class="text-sm text-gray-600">S&P 500</div>
+                        <div class="text-xl font-bold text-gray-800 index-value">4,567.89</div>
+                        <div class="text-sm text-green-600 index-change">+0.3%</div>
+                    </div>
+                </div>
+
+                <!-- Trending Stocks -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-700 mb-4">Trending Stocks</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Symbol</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Name</th>
+                                    <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Price</th>
+                                    <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Change</th>
+                                    <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Volume</th>
+                                    <th class="px-4 py-2 text-center text-sm font-medium text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stocksTable">
+                                <!-- Stock data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-history text-blue-600 mr-2"></i>Analysis History
+                </h3>
+                
+                <div id="historyList" class="space-y-4">
+                    <!-- History items will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Backtest Section -->
+    <section id="backtest" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>Strategy Backtesting
+                </h3>
+                
+                <!-- Backtest Configuration -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <!-- Data Configuration -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-4">Data Configuration</h4>
+                        
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Symbol</label>
+                                <input type="text" id="backtestSymbol" placeholder="e.g., AAPL" value="AAPL" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                    <input type="date" id="backtestStartDate" value="2023-01-01" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                    <input type="date" id="backtestEndDate" value="2024-01-01" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                </div>
+                            </div>
+                            
+                            <button id="loadHistoricalDataBtn" onclick="loadHistoricalData()" 
+                                    class="w-full bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 transition">
+                                <i class="fas fa-download mr-2"></i>Load Historical Data
+                            </button>
+                        </div>
+                        
+                        <div id="dataSummary" class="mt-4">
+                            <!-- Data summary will be displayed here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Strategy Configuration -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-4">Strategy Configuration</h4>
+                        
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Strategy</label>
+                                <select id="backtestStrategy" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option value="buyAndHold">Buy and Hold</option>
+                                    <option value="momentum">Momentum</option>
+                                    <option value="meanReversion">Mean Reversion</option>
+                                    <option value="macdCrossover">MACD Crossover</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Initial Capital ($)</label>
+                                <input type="number" id="backtestCapital" value="10000" min="1000" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            
+                            <div id="strategyParameters">
+                                <!-- Strategy-specific parameters will be inserted here -->
+                            </div>
+                            
+                            <button id="runBacktestBtn" 
+                                    class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-play mr-2"></i>Run Backtest
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Backtest Results -->
+                <div id="backtestResults" class="hidden">
+                    <h4 class="font-semibold text-gray-800 mb-4">Backtest Results</h4>
+                    
+                    <!-- Performance Metrics -->
+                    <div id="backtestMetrics" class="mb-6">
+                        <!-- Metrics will be displayed here -->
+                    </div>
+                    
+                    <!-- Performance Chart -->
+                    <div class="bg-white rounded-lg p-4 mb-6" style="height: 400px;">
+                        <canvas id="backtestChart"></canvas>
+                    </div>
+                    
+                    <!-- Trade History -->
+                    <div class="bg-white rounded-lg p-4">
+                        <h5 class="font-semibold text-gray-800 mb-3">Trade History</h5>
+                        <div id="backtestTrades">
+                            <!-- Trades will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings" class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-cog text-blue-600 mr-2"></i>API Settings
+                </h3>
+                
+                <!-- API Configuration -->
+                <div class="max-w-2xl">
+                    <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Security Notice</h4>
+                                <p class="text-sm text-gray-600">
+                                    Your API key is stored only in your local browser and never uploaded to any server.
+                                    Please ensure you don't save API keys on public computers.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DeepSeek API Configuration -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-4">
+                            <i class="fas fa-brain text-purple-600 mr-2"></i>DeepSeek API Configuration
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    API Key
+                                </label>
+                                <div class="flex space-x-2">
+                                    <input type="password" id="deepseekApiKey" 
+                                        class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="sk-...">
+                                    <button onclick="toggleApiKeyVisibility()" 
+                                        class="px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                                        <i class="fas fa-eye" id="apiKeyToggleIcon"></i>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Get API Key: <a href="https://platform.deepseek.com" target="_blank" class="text-blue-600 hover:underline">DeepSeek Platform</a>
+                                </p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    API Endpoint (Optional)
+                                </label>
+                                <input type="text" id="deepseekApiEndpoint" 
+                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="https://api.deepseek.com/v1/chat/completions"
+                                    value="https://api.deepseek.com/v1/chat/completions">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Model Selection
+                                </label>
+                                <select id="deepseekModel" 
+                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="deepseek-chat">DeepSeek Chat (Recommended)</option>
+                                    <option value="deepseek-coder">DeepSeek Coder</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="enableDeepseekApi" class="rounded">
+                                <label for="enableDeepseekApi" class="text-sm text-gray-700">
+                                    Enable DeepSeek API (Uses mock data when disabled)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex space-x-3">
+                            <button onclick="saveApiSettings()" 
+                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-save mr-2"></i>Save Settings
+                            </button>
+                            <button onclick="testApiConnection()" 
+                                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                                <i class="fas fa-plug mr-2"></i>Test Connection
+                            </button>
+                            <button onclick="clearApiSettings()" 
+                                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                                <i class="fas fa-trash mr-2"></i>Clear Settings
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- API Status -->
+                    <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-700 mb-3">API Status</h4>
+                        <div id="apiStatus" class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">Connection Status</span>
+                                <span id="connectionStatus" class="text-sm font-medium text-gray-500">
+                                    <i class="fas fa-circle text-gray-400 mr-1"></i>Not Configured
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">API Call Count</span>
+                                <span id="apiCallCount" class="text-sm font-medium">0</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">Last API Call</span>
+                                <span id="lastApiCall" class="text-sm font-medium">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Usage Tips -->
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Usage Tips
+                        </h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• After configuring API, analysis will use real AI models</li>
+                            <li>• API calls may incur charges, please check DeepSeek pricing</li>
+                            <li>• Recommended to set reasonable call frequency limits</li>
+                            <li>• You can switch back to mock mode anytime if issues occur</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disclaimer Section -->
+    <section class="bg-red-50 border-t-4 border-red-500 py-6">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-red-400">
+                <h3 class="text-xl font-bold text-red-700 mb-4 flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    IMPORTANT DISCLAIMER
+                </h3>
+                <div class="text-gray-700 space-y-3 text-sm">
+                    <p>
+                        <strong>FOR EDUCATIONAL AND REFERENCE PURPOSES ONLY:</strong> WeiQuant is an experimental quantitative research platform. 
+                        All analysis, predictions, and recommendations provided by this platform are for informational and educational purposes only.
+                    </p>
+                    <p>
+                        <strong>NO INVESTMENT ADVICE:</strong> Nothing on this platform constitutes investment advice, financial advice, trading advice, 
+                        or any other sort of advice. You should not treat any of the platform's content as such. WeiQuant does not recommend that any 
+                        securities should be bought, sold, or held by you.
+                    </p>
+                    <p>
+                        <strong>MODEL LIMITATIONS:</strong> The quantitative models and algorithms used in this platform are still under development 
+                        and have not been fully validated. They may contain errors, biases, or produce inaccurate results. The models are experimental 
+                        and should not be relied upon for making actual investment decisions.
+                    </p>
+                    <p>
+                        <strong>NO WARRANTY:</strong> The platform is provided "as is" without any representations or warranties, express or implied. 
+                        Wei makes no representations or warranties in relation to this platform or the information and materials provided.
+                    </p>
+                    <p>
+                        <strong>RISK WARNING:</strong> Trading and investing in financial markets involves substantial risk of loss and is not suitable 
+                        for every investor. The valuation of investments may fluctuate, and as a result, you may lose more than your original investment. 
+                        Past performance is not indicative of future results.
+                    </p>
+                    <p>
+                        <strong>NO LIABILITY:</strong> Wei will not be liable for any losses, injuries, or damages from the display or use of this 
+                        information. You acknowledge that you use any information or analysis provided by WeiQuant at your own risk.
+                    </p>
+                    <p class="font-semibold text-red-600">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        By using this platform, you acknowledge that you have read, understood, and agree to this disclaimer. If you do not agree 
+                        with this disclaimer, please do not use the platform.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">About Platform</h4>
+                    <p class="text-gray-400 text-sm">
+                        WeiQuant is a professional quantitative investment research platform that provides
+                        professional asset allocation advice through analysis of real-time news and market data.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Key Features</h4>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Real-time News Analysis</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>AI Investment Recommendations</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Risk Assessment</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Professional Portfolio Management</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Disclaimer</h4>
+                    <p class="text-gray-400 text-sm">
+                        Analysis and recommendations provided are for reference only and do not constitute investment advice.
+                        Investment involves risk. Please make decisions carefully.
+                    </p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
+                <p>&copy; 2025 WeiQuant. All rights reserved. | Developed by Wei | Powered by Advanced Quantitative Technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Asset Modal -->
+    <div id="addAssetModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Add Asset</h3>
+            <form id="addAssetForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Asset Type</label>
+                    <select id="assetType" class="w-full p-2 border rounded">
+                        <option value="stock">Stock</option>
+                        <option value="bond">Bond</option>
+                        <option value="fund">Fund</option>
+                        <option value="crypto">Cryptocurrency</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+                    <input type="text" id="assetName" class="w-full p-2 border rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                    <input type="number" id="assetAmount" class="w-full p-2 border rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Purchase Price</label>
+                    <input type="number" id="assetPrice" step="0.01" class="w-full p-2 border rounded" required>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeAssetModal()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/security-utils.js"></script>
+    <script src="js/error-handler.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/research-framework.js"></script>
+    <script src="js/research-ui.js"></script>
+    <script src="js/risk-assessment.js"></script>
+    <script src="js/quant-models.js"></script>
+    <script src="js/quant-ui.js"></script>
+    <script src="js/backtest.js"></script>
+    <script src="js/backtest-ui.js"></script>
+    <script src="js/api-config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/analysis.js"></script>
+    <script src="js/portfolio.js"></script>
+    <script src="js/portfolio-analysis.js"></script>
+    <script src="js/portfolio-analysis-ui.js"></script>
+    <script src="js/market.js"></script>
+</body>
+</html>

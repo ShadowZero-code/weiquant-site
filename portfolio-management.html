@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeiQuant Portfolio Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <link rel="stylesheet" href="css/weiquant-brand.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Disclaimer Banner -->
+    <div id="disclaimerBanner" class="bg-amber-50 border-b-2 border-amber-400 px-4 py-3">
+        <div class="container mx-auto">
+            <div class="flex items-start space-x-2 text-sm text-amber-800">
+                <i class="fas fa-exclamation-triangle text-amber-600 mt-0.5"></i>
+                <div>
+                    <strong>IMPORTANT DISCLAIMER:</strong> This platform is for educational and reference purposes only. 
+                    The quantitative models are experimental and not fully mature. Nothing here constitutes investment advice. 
+                    Trading involves substantial risk. Use at your own risk.
+                    <button onclick="document.getElementById('disclaimerBanner').style.display='none'" class="ml-2 text-amber-600 hover:text-amber-800 underline">
+                        Dismiss
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Management Section -->
+    <section id="portfolioManagement" class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-3"></i>
+                    WeiQuant Portfolio Management
+                </h2>
+
+                <!-- Add Asset Form -->
+                <div class="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-plus-circle text-green-600 mr-2"></i>Add New Asset
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Asset Type</label>
+                            <select id="assetType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="stock">Stock</option>
+                                <option value="etf">ETF</option>
+                                <option value="bond">Bond</option>
+                                <option value="commodity">Commodity</option>
+                                <option value="crypto">Cryptocurrency</option>
+                                <option value="cash">Cash Equivalent</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Symbol/Ticker</label>
+                            <input type="text" id="assetSymbol" placeholder="e.g., AAPL, NVDA" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                            <input type="number" id="assetQuantity" placeholder="Number of shares" min="0.001" step="0.001"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Buy Date</label>
+                            <input type="date" id="buyDate" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Buy Price (Auto-fetch)</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="buyPrice" placeholder="Will auto-fetch" step="0.01"
+                                       class="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                                <button onclick="fetchHistoricalPrice()" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
+                            <input type="text" id="assetNotes" placeholder="Investment rationale"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="mt-4 flex gap-3">
+                        <button onclick="addAsset()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center">
+                            <i class="fas fa-plus mr-2"></i>Add to Portfolio
+                        </button>
+                        <button onclick="clearForm()" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
+                            <i class="fas fa-redo mr-2"></i>Reset Form
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Portfolio Summary Cards -->
+                <div class="grid md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg p-4">
+                        <div class="text-sm opacity-90">Total Portfolio Value</div>
+                        <div class="text-2xl font-bold" id="totalValue">$0.00</div>
+                        <div class="text-xs mt-1 opacity-75">Updated: <span id="lastUpdate">Never</span></div>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-4">
+                        <div class="text-sm opacity-90">Total P&L</div>
+                        <div class="text-2xl font-bold" id="totalPL">$0.00</div>
+                        <div class="text-xs mt-1" id="totalPLPercent">0.00%</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg p-4">
+                        <div class="text-sm opacity-90">Today's Change</div>
+                        <div class="text-2xl font-bold" id="todayChange">$0.00</div>
+                        <div class="text-xs mt-1" id="todayChangePercent">0.00%</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-lg p-4">
+                        <div class="text-sm opacity-90">Portfolio Beta</div>
+                        <div class="text-2xl font-bold" id="portfolioBeta">0.00</div>
+                        <div class="text-xs mt-1">Market Risk Exposure</div>
+                    </div>
+                </div>
+
+                <!-- Current Holdings Table -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            <i class="fas fa-wallet text-blue-600 mr-2"></i>Current Holdings
+                        </h3>
+                        <div class="flex gap-2">
+                            <button onclick="refreshAllPrices()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-sync mr-2"></i>Refresh Prices
+                            </button>
+                            <button onclick="exportPortfolio()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
+                                <i class="fas fa-download mr-2"></i>Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Type</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Symbol</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Qty</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Buy Date</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Buy Price</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Current Price</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Market Value</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">P&L</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">P&L %</th>
+                                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Weight</th>
+                                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="holdingsTableBody">
+                                <!-- Holdings will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                        <div id="emptyPortfolioMessage" class="text-center py-8 text-gray-500">
+                            <i class="fas fa-inbox text-4xl mb-3"></i>
+                            <p>No assets in portfolio. Add your first asset above.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Charts -->
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                            <i class="fas fa-chart-pie text-purple-600 mr-2"></i>Asset Allocation
+                        </h4>
+                        <div style="height: 300px;">
+                            <canvas id="allocationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-gray-200 p-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                            <i class="fas fa-chart-line text-green-600 mr-2"></i>Performance History
+                        </h4>
+                        <div style="height: 300px;">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Analysis Section -->
+                <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-shield-alt text-red-600 mr-2"></i>Risk Analysis
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg p-4">
+                            <div class="text-sm text-gray-600">Portfolio Volatility</div>
+                            <div class="text-2xl font-bold text-gray-800" id="portfolioVolatility">0.00%</div>
+                            <div class="text-xs text-gray-500">Annualized</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <div class="text-sm text-gray-600">Sharpe Ratio</div>
+                            <div class="text-2xl font-bold text-gray-800" id="sharpeRatio">0.00</div>
+                            <div class="text-xs text-gray-500">Risk-adjusted return</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <div class="text-sm text-gray-600">Maximum Drawdown</div>
+                            <div class="text-2xl font-bold text-red-600" id="maxDrawdown">0.00%</div>
+                            <div class="text-xs text-gray-500">Peak to trough</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sector Allocation -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-industry text-indigo-600 mr-2"></i>Sector Allocation
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <canvas id="sectorChart"></canvas>
+                        </div>
+                        <div id="sectorBreakdown" class="space-y-2">
+                            <!-- Sector breakdown will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Portfolio Recommendations
+                    </h3>
+                    <div id="portfolioRecommendations" class="grid md:grid-cols-2 gap-4">
+                        <!-- AI-powered recommendations will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/portfolio-professional.js"></script>
+</body>
+</html>
